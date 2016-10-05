@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="manifest" href="manifest.json">
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+  </head>
+  <body ng-app="craftEd" ng-controller="dragCtrl">
+    <script>
+      var craftEd = angular.module('craftEd', ['ionic']).run(function($ionicPlatform) {
+        $ionicPlatform.ready(function() {
+          // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard for form inputs)
+          if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            cordova.plugins.Keyboard.disableScroll(true);
+
+          }
+          if (window.StatusBar) {
+            // org.apache.cordova.statusbar required
+            StatusBar.styleDefault();
+          }
+        });
+      })
+      craftEd.controller("dragCtrl", [
+        "$scope",
+        function($scope) {
+          $scope.onDrag = function(event) {
+            $scope.draggedStyle = {
+              "transform": "translate(" + event.gesture.center.pageX + "px, " + event.gesture.center.pageY + "px)",
+              "-webkit-transform": "translate(" + event.gesture.center.pageX + "px, " + event.gesture.center.pageY + "px)"
+            };
+          }
+          $scope.onRelease = function(event) {
+            $scope.draggedStyle = {};
+          };
+        }
+      ]);
+    </script>
+    <div style="height:500px;width:500px;">
+      <div on-drag="onDrag($event)" on-release="onRelease($event)" style="border-radius:50%;width:100px;height:100px;background-color:yellow;" ng-style="draggedStyle">
+        <strong style="top:40%;left:30%;position:relative;font-size:20px">Beer</strong>
+      </div>
+    </div>
+  </body>
+</html>
